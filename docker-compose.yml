@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - ./backend/database.sql:/docker-entrypoint-initdb.d/database.sql  # 初期化スクリプト
+      - postgres-data:/var/lib/postgresql/data  # データ永続化
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres-data:
