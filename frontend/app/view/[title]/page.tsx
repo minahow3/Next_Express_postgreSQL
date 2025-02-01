@@ -28,6 +28,10 @@ interface SampleData {
   itinerary: Itinerary;
 }
 
+interface PageParams {
+  title: string;
+}
+
 const getSampleData = (title: string): SampleData => ({
   travelDetails: {
     title: decodeURIComponent(title),
@@ -56,30 +60,8 @@ const getSampleData = (title: string): SampleData => ({
   }
 });
 
-interface PageParams {
-  title: string;
-}
-
-// getStaticPropsを使用してparamsを取得
-export async function getStaticProps({ params }: { params: PageParams }) {
+// async function は削除
+export default function ViewPage({ params }: { params: PageParams }) {
   const data = getSampleData(params.title);
-  return {
-    props: {
-      data
-    }
-  };
-}
-
-export default function ViewPage({ data }: { data: SampleData }) {
   return <ViewItinerary {...data} />;
-}
-
-// 動的なパスを設定するためにgetStaticPathsを使用
-export async function getStaticPaths() {
-  return {
-    paths: [
-      { params: { title: 'sample-title' } }
-    ],
-    fallback: false,
-  };
 }
