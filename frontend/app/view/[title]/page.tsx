@@ -1,6 +1,5 @@
 import ViewItinerary from "@/components/view-itinerary";
 
-// getSampleData の戻り値の型定義
 interface TravelDetail {
   title: string;
   startDate: string;
@@ -57,13 +56,30 @@ const getSampleData = (title: string): SampleData => ({
   }
 });
 
-// paramsの型を手動で定義
 interface PageParams {
   title: string;
 }
 
-export default function ViewPage({ params }: { params: PageParams }) {
+// getStaticPropsを使用してparamsを取得
+export async function getStaticProps({ params }: { params: PageParams }) {
   const data = getSampleData(params.title);
+  return {
+    props: {
+      data
+    }
+  };
+}
 
+export default function ViewPage({ data }: { data: SampleData }) {
   return <ViewItinerary {...data} />;
+}
+
+// 動的なパスを設定するためにgetStaticPathsを使用
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { title: 'sample-title' } }
+    ],
+    fallback: false,
+  };
 }
