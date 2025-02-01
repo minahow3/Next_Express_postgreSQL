@@ -1,6 +1,35 @@
-import ViewItinerary from '@/components/view-itinerary'
+import ViewItinerary from "@/components/view-itinerary";
 
-const getSampleData = (title: string) => ({
+// getSampleData の戻り値の型定義
+interface TravelDetail {
+  title: string;
+  startDate: string;
+  endDate: string;
+}
+
+interface ItinerarySet {
+  id: string;
+  location: string;
+  transport: string;
+  time: string;
+  transportType: 'car' | 'train' | 'walk';
+  locationType: 'home' | 'sightseeing' | 'landmark';
+  showTransport: boolean;
+  imageUrl: string;
+}
+
+interface Itinerary {
+  [key: string]: {
+    sets: ItinerarySet[];
+  };
+}
+
+interface SampleData {
+  travelDetails: TravelDetail;
+  itinerary: Itinerary;
+}
+
+const getSampleData = (title: string): SampleData => ({
   travelDetails: {
     title: decodeURIComponent(title),
     startDate: "2024-01-01",
@@ -26,11 +55,15 @@ const getSampleData = (title: string) => ({
       ]
     }
   }
-})
+});
 
-export default function ViewPage({ params }: { params: { title: string } }) {
-  const data = getSampleData(params.title)
-  
-  return <ViewItinerary {...data} />
+// paramsの型を手動で定義
+interface PageParams {
+  title: string;
 }
 
+export default function ViewPage({ params }: { params: PageParams }) {
+  const data = getSampleData(params.title);
+
+  return <ViewItinerary {...data} />;
+}
