@@ -60,8 +60,13 @@ const getSampleData = (title: string): SampleData => ({
   }
 });
 
-// async function は削除
-export default function ViewPage({ params }: { params: PageParams }) {
-  const data = getSampleData(params.title);
+// props
+type Props = {
+  params: Promise<PageParams>;
+};
+
+export default async function ViewPage({ params }: Props) {
+  const { title } = await params;  // 非同期でparamsを解決
+  const data = getSampleData(title);  // 非同期処理後にデータを取得
   return <ViewItinerary {...data} />;
 }
