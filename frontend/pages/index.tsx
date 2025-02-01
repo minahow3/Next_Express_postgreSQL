@@ -16,7 +16,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         // axiosを使ってバックエンドAPIからデータを取得
-        const response = await axios.get(`${apiUrl}/api/greeting`);
+        const response = await axios.get(`${apiUrl}api/greeting`);
 
         // データをステートに保存
         setData(response.data);
