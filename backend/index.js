@@ -1,21 +1,20 @@
-//backend/index.js
+// backend/index.js
 const express = require('express');
 const { Pool } = require('pg');
-const app = express();
-const port = 5000;
+const cors = require('cors');
 
+const app = express();
+const port = process.env.PORT || 5000;
+
+// 環境変数 DATABASE_URL を使ってPostgreSQLに接続
 const pool = new Pool({
-  user: 'user',
-  host: 'db',
-  database: 'mydb',
-  password: 'password',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // RenderのPostgreSQLに接続するために必要
+  },
 });
 
-const cors = require('cors');
 app.use(cors());
-
-
 
 app.get('/api/greeting', async (req, res) => {
   try {
