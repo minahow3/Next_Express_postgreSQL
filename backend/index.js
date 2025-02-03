@@ -14,15 +14,18 @@ const pool = new Pool({
 
 app.use(cors());
 
-console.log("DATABASE_URL:", process.env.DATABASE_URL ? "Set" : "Not Set");
 
-pool.connect()
-  .then(() => console.log("Connected to the database!"))
-  .catch((err) => console.error("Database connection error:", err.message));
 
 
 app.get('/api/greeting', async (req, res) => {
   try {
+  // DB接続検証用
+    console.log("DATABASE_URL:", process.env.DATABASE_URL ? "Set" : "Not Set");
+    pool.connect()
+  .then(() => console.log("Connected to the database!"))
+  .catch((err) => console.error("Database connection error:", err.message));
+  // ここまで
+
     const result = await pool.query('SELECT * FROM greetings LIMIT 1');
     res.json(result.rows[0]);
   } catch (error) {
