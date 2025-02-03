@@ -9,8 +9,9 @@ const port = process.env.PORT || 3000;
 // 環境変数 DATABASE_URL を使ってPostgreSQLに接続
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { require: true },
+  ssl: { rejectUnauthorized: false }, // ← これが正しい
 });
+
 app.use(cors());
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL ? "Set" : "Not Set");
